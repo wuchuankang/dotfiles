@@ -1,5 +1,5 @@
 
-alias rm='mv -f --target-directory=/home/wck/.local/share/Trash/files/'
+alias rm='mv -f --target-directory=/home/wck/.local/trash'
 
 alias shut='shutdown -h now'
 
