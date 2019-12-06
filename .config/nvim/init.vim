@@ -201,7 +201,7 @@ let g:lightline = {
 "===
 "=== airline
 "=== 
-let g:airline_theme='dracula'
+"let g:airline_theme='dracula'
 let g:airline#extensions#tabline#enabled = 1
 let g:lightline = {
   \     'active': {
@@ -269,7 +269,7 @@ let g:ale_c_cppcheck_options = ''
 let g:ale_cpp_cppcheck_options = ''
 
 "let b:ale_linters = ['pylint']
-let b:ale_fixers = ['autopep8', 'yapf']
+let b:ale_fixers = ['checkcpp', 'autopep8', 'yapf']
 
 
 "===
@@ -303,33 +303,6 @@ endif
 "=== Pydocstrinh 为函数自动添加注释
 "===
 autocmd FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4 expandtab
-
-
-" ===
-" === coc
-" ===
-" fix the most annoying bug that coc has
-silent! au BufEnter,BufRead,BufNewFile * silent! unmap if
-let g:coc_global_extensions = ['coc-python', 'coc-vimlsp', 'coc-html', 'coc-json', 'coc-css', 'coc-tsserver', 'coc-yank', 'coc-lists', 'coc-gitignore', 'coc-vimlsp', 'coc-tailwindcss', 'coc-stylelint']
-set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
-" use <tab> for trigger completion and navigate to the next complete item
-function! s:check_back_space() abort
-	let col = col('.') - 1
-	return !col || getline('.')[col - 1]	=~ '\s'
-endfunction
-inoremap <silent><expr> <Tab>
-			\ pumvisible() ? "\<C-n>" :
-			\ <SID>check_back_space() ? "\<Tab>" :
-			\ coc#refresh()
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <silent><expr> <c-space> coc#refresh()
-" Useful commands
-nnoremap <silent> <space>y :<C-u>CocList -A --normal yank<cr>
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-nmap <leader>rn <Plug>(coc-rename)
 
 
 "===
@@ -370,7 +343,7 @@ let g:ycm_global_ycm_extra_conf = '~/.vim/plugged/YouCompleteMe/third_party/ycmd
 " '-isystem',
 "'/usr/include',
 "'-isystem',
-"'/usr/include/c++/9.1.0',
+"'/usr/include/c++/9.2.0',    "这个要根据具体c++版本来确定到底是哪一个
 "'-isystem',
 "'/usr/include/i386-linux-gnu/c++'
 "才能够补全 C++ 头文件
