@@ -268,8 +268,19 @@ let g:ale_cpp_gcc_options = '-Wall -O2 -std=c++14'
 let g:ale_c_cppcheck_options = ''
 let g:ale_cpp_cppcheck_options = ''
 
-"let b:ale_linters = ['pylint']
-let b:ale_fixers = ['checkcpp', 'autopep8', 'yapf']
+" 错误检查的依赖
+let g:ale_virtualtext_cursor = 1
+let g:ale_linters = {
+				\ 'c': ['gcc', 'cppcheck'], 
+				\ 'cpp': ['gcc', 'cppcheck'], 
+				\ 'python': ['flake8', 'pylint'], 
+				\ 'lua': ['luac'], 
+				\ 'go': ['go build', 'gofmt'],
+				\ 'java': ['javac'],
+				\ 'javascript': ['eslint'], 
+				\ }
+let g:ale_c_gcc_executable = '/usr/bin/gcc'
+let b:ale_fixers = ['autopep8', 'yapf']
 
 
 "===

@@ -143,6 +143,7 @@ if [ "$TERM" == "xterm" ]; then
 fi
 
 export PATH=/opt/anaconda/bin/:$PATH
+export PATH=/usr/bin/cppcheck:$PATH
 export PATH=/home/wck/.conda/envs/py36/bin/:$PATH
 
 source /usr/share/nvm/init-nvm.sh

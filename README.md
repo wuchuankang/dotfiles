@@ -42,3 +42,6 @@ dconf-editor -> org -> gnome -> desktop -> input-sources -> xkb-options
 ['caps:swapescape']  
 reboot
 
+### 安装顺序
+
+先安装上面的软件，然后再进行下面的配置，因为下面的配置有的要依赖上面的app
