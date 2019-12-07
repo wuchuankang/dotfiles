@@ -2,6 +2,9 @@
 
 ### install app
 
+sudo pacman -S yay  #是另外一种manjaro安装软件的方式
+- sudo pacman -S htop
+- sudo pacman -S axel
 - sudo pacman -S fish
 - sudo pacman -S tmux
 - sudo pacman -S vim
