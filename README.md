@@ -4,7 +4,8 @@
 
 sudo pacman -S yay  #是另外一种manjaro安装软件的方式
 - sudo pacman -S htop
-- sudo pacman -S axel
+- sudo pacman -S axel  #多线程下载 比wget好用多了
+- sudo pacman -S flameshot  # 截图软件
 - sudo pacman -S fish
 - sudo pacman -S tmux
 - sudo pacman -S vim
@@ -24,6 +25,14 @@ sudo pacman -S yay  #是另外一种manjaro安装软件的方式
 - sudo pacman -S wps-office
 - sudo pacman -S clang make cmake gdb    # 编译调试环境
 - sudo pacman -S netease-cloud-music     # 网易云音乐
+
+- 安装cgdb所需依赖
+    - sudo pacman -S sh
+    - sudo pacman -S autoconf
+    - sudo pacman -S automake
+    - sudo pacman -S libtool
+    - sudo pacman -S flex
+    - sudo pacman -S bison
 
 - 安装搜狗输入法
     - 
