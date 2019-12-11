@@ -1,7 +1,7 @@
 ## dotfiles
 
 ### install app
-
+```vim
 sudo pacman -S yay  #是另外一种manjaro安装软件的方式
 - sudo pacman -S htop
 - sudo pacman -S axel  #多线程下载 比wget好用多了
@@ -33,14 +33,16 @@ sudo pacman -S yay  #是另外一种manjaro安装软件的方式
     - sudo pacman -S libtool
     - sudo pacman -S flex
     - sudo pacman -S bison
-
+```
 - 安装搜狗输入法
     - 
 
-- 安装ycm
-    - 通过插件安装后，要进入 cd .vim/plugged/youcompleteme/ 
-    - ./install.py --clang-complete 才能补全C++
-    - 要补全头文件，参见init.vim中ycm配置
+###  安装ycm
+
+- 通过插件安装后，要进入 cd .vim/plugged/youcompleteme/ 
+- ./install.py --clang-complete 才能补全C++
+- 要补全头文件，参见init.vim中ycm配置
+
 
 ### fish 配置
 - fish_config
@@ -49,10 +51,10 @@ sudo pacman -S yay  #是另外一种manjaro安装软件的方式
 ### neovim
 - sudo ln -sf /usr/bin/nvim /usr/bin/vi
 
-### 将ecp->caps
+### ecp 映射为 caps
 dconf-editor -> org -> gnome -> desktop -> input-sources -> xkb-options  
 ['caps:swapescape']  
-reboot
+reboot  
 
 ### 安装顺序
 
