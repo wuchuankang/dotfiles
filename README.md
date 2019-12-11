@@ -57,3 +57,8 @@ reboot
 ### 安装顺序
 
 先安装上面的软件，然后再进行下面的配置，因为下面的配置有的要依赖上面的app
+
+### 系统快捷键设置
+
+1. 系统设置->键盘->自定义快捷键： name：max terminal ，command: gnome-terminal --maximize
+2. chromium, command:chromium 
