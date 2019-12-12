@@ -160,6 +160,8 @@ Plug 'godlygeek/tabular'
 "Plug 'plasticboy/vim-markdown'
 
 " 提供函数和类等定义的跳转，
+" ctrl+]来跳转到定义 ctrl+w] 用新窗口打开并跳转到定义，通过 ctrl+o
+" 跳回原来地方，ctrl+i 再跳回来
 Plug 'universal-ctags/ctags'  " 需要通过 sudo pacman -S ctags 安装之后才可以
 Plug 'ludovicchabant/vim-gutentags' "结合上面的一起使用，当只有文件夹是个工程的时候才会有用，不是工程，可以建立一个空的 .root 文件即可，具体见配置
 " 文件资源查看
@@ -189,7 +191,7 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'Shougo/echodoc.vim'
 " 为C++ 文件提供颜色支持
 Plug 'octol/vim-cpp-enhanced-highlight'
-" 将编辑的程序回滚到上一个/上几个状态上
+" 将编辑的程序回滚到上一个/上几个状态上, 通过g来召唤
 Plug 'mbbill/undotree'
 " 显示更改的文件内容，但是必须是在git仓库中，否则不会显示更改的内容
 " 通过 git init 可以讲文件初始化为仓库，通过 git add .; git commit -m "xxx";
@@ -454,7 +456,7 @@ let g:cpp_posix_standard = 1
 "===
 "=== undotree
 "===
-noremap L :UndotreeToggle<CR>
+noremap g :UndotreeToggle<CR>
 let g:undotree_DiffAutoOpen = 1
 let g:undotree_SetFocusWhenToggle = 1
 let g:undotree_ShortIndicators = 1
