@@ -29,6 +29,10 @@ map zf za
 " 重新打开文件后，光标会定位在上次编的位置
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
+" 启动 termdebug 插件
+nnoremap <Leader>d :packadd termdebug<CR><ESC>:Termdebug<CR><ESC><c-w>w<c-w>w<c-w>H
+
+
 autocmd FileType markdown inoremap ` ``````<left><left><left>python<cr><Esc>O
 autocmd FileType markdown inoremap *  ****<left><left>
 "用于在文字上添加删除线
@@ -45,6 +49,10 @@ autocmd FileType python nmap <leader>; o""""""""<left><left><left><cr><Esc>O
 " <cr>是回车
 " Open the vimrc file anytime
 map <LEADER>rc :e ~/.config/nvim/init.vim<CR>
+
+" C++ 中添加{}
+imap <C-j> <Esc>A{
+
 
 noremap j h
 noremap i k
@@ -82,7 +90,7 @@ map q :bd<CR>  " 关闭当前的窗口
 nnoremap ; :noh<CR>    
 " 用于前进到尾部和头部
 nnoremap e $
-nnoremap w ^
+"nnoremap w ^
 
 "因为后面的tagbar要用方向建进行上下移动，所以这里不进行映射
 "map <up> :res +5<CR>  "
@@ -149,7 +157,7 @@ Plug 'iamcco/mathjax-support-for-mkdp' " 为markdown提供公式支持
 " /= 就是将等号对齐，依次类推
 Plug 'godlygeek/tabular'
 " markdown 语法高亮插件
-Plug 'plasticboy/vim-markdown'
+"Plug 'plasticboy/vim-markdown'
 
 " 提供函数和类等定义的跳转，
 Plug 'universal-ctags/ctags'  " 需要通过 sudo pacman -S ctags 安装之后才可以
@@ -165,7 +173,7 @@ Plug 'Raimondi/delimitMate'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 " vim颜色配置
-Plug 'connorholyday/vim-snazzy'
+"Plug 'connorholyday/vim-snazzy'
 " 代码自动补全
 Plug 'Valloric/YouCompleteMe'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -174,13 +182,30 @@ Plug 'dense-analysis/ale'
 " 进行多行编辑
 Plug 'terryma/vim-multiple-cursors'
 " 为python提供语义高亮
-Plug 'numirias/semshi', { 'do': ':UpdateRemotePlugins' }
+"Plug 'numirias/semshi', { 'do': ':UpdateRemotePlugins' }
 " 是快速注释,默认已经映射过了 <leader>cc是注释，<leader>cu是取消注释
 Plug 'scrooloose/nerdcommenter'
 " 为函数提供智能提示
 Plug 'Shougo/echodoc.vim'
 " 为C++ 文件提供颜色支持
 Plug 'octol/vim-cpp-enhanced-highlight'
+" 将编辑的程序回滚到上一个/上几个状态上
+Plug 'mbbill/undotree'
+" 显示更改的文件内容，但是必须是在git仓库中，否则不会显示更改的内容
+" 通过 git init 可以讲文件初始化为仓库，通过 git add .; git commit -m "xxx";
+" 然后再更改程序内容，就是在旁边显示出来更改过的内容，实际是通过与仓库中上一个
+" 提交的版本内容进行比较的
+Plug 'airblade/vim-gitgutter'
+" 对括号进行配色
+"Plug 'frazrepo/vim-rainbow'
+" vim 主题颜色
+"Plug 'altercation/vim-colors-solarized'
+"
+"Plug 'chrisbra/Colorizer'
+" vim颜色配置
+Plug 'joshdick/onedark.vim'
+" 各种语法高亮
+Plug 'sheerun/vim-polyglot'
 call plug#end()
 
 " ===
@@ -190,25 +215,31 @@ let g:python_highlight_all = 1
 
 
 " ===
+" === Colorizer
+" ===
+"let g:colorizer_syntax = 1
+
+" ===
 " === snazzy
 " ===
-colorscheme snazzy
-let g:SnazzyTransparent = 1
-let g:lightline = {
-\ 'colorscheme': 'snazzy',
-\ }
+"colorscheme snazzy
+"let g:SnazzyTransparent = 1
+"let g:lightline = {
+"\ 'colorscheme': 'snazzy',
+"\ }
 
 "===
 "=== airline
 "=== 
 "let g:airline_theme='dracula'
 let g:airline#extensions#tabline#enabled = 1
-let g:lightline = {
-  \     'active': {
-  \         'left': [['mode', 'paste' ], ['readonly', 'filename', 'modified']],
-  \         'right': [['lineinfo'], ['percent'], ['fileformat', 'fileencoding']]
-  \     }
-  \ }
+let g:airline_theme='onedark'
+"let g:lightline = {
+  "\     'active': {
+  "\         'left': [['mode', 'paste' ], ['readonly', 'filename', 'modified']],
+  "\         'right': [['lineinfo'], ['percent'], ['fileformat', 'fileencoding']]
+  "\     }
+  "\ }
 
 
 "===
@@ -240,17 +271,15 @@ let NERDTreeMapChangeRoot = "n"
 " ,+d是删除当前位置处的文件，进入添加或者删除操作后，不想操作，想退出，可以用ctrl+c取消
 let NERDTreeMapMenu = ","   
 
-"设置树的显示图标
-let g:NERDTreeDirArrowExpandable = '▸'
-let g:NERDTreeDirArrowCollapsible = '▾'
-"Making it prettier
-let NERDTreeMinimalUI = 1
-let NERDTreeDirArrows = 1
 " 不显示隐藏文件
 let g:NERDTreeHidden=0
 " 过滤: 所有指定文件和文件夹不显示
 let NERDTreeIgnore = ['\.pyc$', '\.swp', '\.swo', '\.vscode', '__pycache__']  
 
+let g:webdevicons_enable = 1
+let g:webdevicons_enable_nerdtree = 1
+let g:webdevicons_enable_airline_tabline = 1
+let g:webdevicons_enable_airline_statusline = 1
 "===
 "=== ale
 "===
@@ -292,6 +321,7 @@ nmap <silent> T  :TagbarToggle<CR>
 "===
 "=== ctags
 "===
+" ctrl+]来跳转到定义 ctrl+w] 用新窗口打开并跳转到定义
 set tags=./.tags;,.tags
 let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project']
 " 所生成的数据文件的名称
@@ -403,6 +433,7 @@ nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 nmap <leader>rn <Plug>(coc-rename)
 
+
 "===
 "=== echodoc
 "===
@@ -419,3 +450,73 @@ let g:cpp_class_scope_highlight = 1
 let g:cpp_member_variable_highlight = 1
 let g:cpp_class_decl_highlight = 1
 let g:cpp_posix_standard = 1
+
+"===
+"=== undotree
+"===
+noremap L :UndotreeToggle<CR>
+let g:undotree_DiffAutoOpen = 1
+let g:undotree_SetFocusWhenToggle = 1
+let g:undotree_ShortIndicators = 1
+let g:undotree_WindowLayout = 2
+let g:undotree_DiffpanelHeight = 8
+let g:undotree_SplitWidth = 24
+function g:Undotree_CustomMap()
+	nmap <buffer> u <plug>UndotreeNextState
+	nmap <buffer> e <plug>UndotreePreviousState
+	nmap <buffer> U 5<plug>UndotreeNextState
+	nmap <buffer> E 5<plug>UndotreePreviousState
+endfunc
+
+
+" ==
+" == GitGutter
+" ==
+let g:gitgutter_map_keys = 0
+let g:gitgutter_override_sign_column_highlight = 0
+let g:gitgutter_preview_win_floating = 1
+autocmd BufWritePost * GitGutter
+nnoremap <LEADER>gf :GitGutterFold<CR>
+nnoremap H :GitGutterPreviewHunk<CR>
+nnoremap <LEADER>g- :GitGutterPrevHunk<CR>
+nnoremap <LEADER>g= :GitGutterNextHunk<CR>
+
+
+"===
+"=== rainbow
+"===
+"let g:rainbow_active = 1
+
+
+"===
+"=== vim-colors-solarized
+"===
+"syntax enable
+"set background=dark
+"let g:solarized_termtrans = 1
+"let g:solarized_termcolors=256
+"colorscheme solarized
+
+
+"=== 
+"=== onedark.vim
+"===
+"Use 24-bit (true-color) mode in Vim/Neovim when outside tmux.
+"If you're using tmux version 2.2 or later, you can remove the outermost $TMUX check and use tmux's 24-bit color support
+"(see < http://sunaku.github.io/tmux-24bit-color.html#usage > for more information.)
+if (empty($TMUX))
+  if (has("nvim"))
+    "For Neovim 0.1.3 and 0.1.4 < https://github.com/neovim/neovim/pull/2198 >
+    let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+  endif
+  "For Neovim > 0.1.5 and Vim > patch 7.4.1799 < https://github.com/vim/vim/commit/61be73bb0f965a895bfb064ea3e55476ac175162 >
+  "Based on Vim patch 7.4.1770 (`guicolors` option) < https://github.com/vim/vim/commit/8a633e3427b47286869aa4b96f2bfc1fe65b25cd >
+  " < https://github.com/neovim/neovim/wiki/Following-HEAD#20160511 >
+  if (has("termguicolors"))
+    set termguicolors
+  endif
+endif
+
+syntax on
+colorscheme onedark
+

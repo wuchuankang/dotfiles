@@ -1,4 +1,5 @@
 ## dotfiles
+这个是本人在manjaro上的配置
 
 ### install app
 ```vim
@@ -62,8 +63,8 @@ reboot
 
 ### 系统快捷键设置
 
-1. 系统设置->键盘->自定义快捷键： name：max terminal ，command: gnome-terminal --maximize
-2. chromium, command:chromium 
+1. 系统设置->键盘->自定义快捷键： name：max terminal ，command: gnome-terminal --maximize   快捷方式：crtl+alt+t
+2. chromium, command:chromium   快捷方式：crtl+alt+c
 
 ### 更改terminal文件颜色
 
