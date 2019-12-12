@@ -70,3 +70,7 @@ reboot
 
 在 ./.dir_colors 中配置
 
+### git 注意点
+
+1. git clone XXX --depth=1    # 参数用于指定clone深度，1表示只clone最近一次的commit
+2. 在clone本配置的时候，最好使用该参数，因为提交历史过多，内容会大一些，不利于下载
