@@ -80,8 +80,8 @@ TERM xterm-debian
 #NORMAL 00	# no color code at all
 #FILE 00	# regular file: use no color at all
 RESET 0		# reset to "normal" color
-DIR 01;35	# directory
-LINK 01;36	# symbolic link.  (If you set this to 'target' instead of a
+DIR 01;36	# directory
+LINK 01;33	# symbolic link.  (If you set this to 'target' instead of a
                 # numerical value, the color is as for the file pointed to.)
 MULTIHARDLINK 00	# regular file with more than one link
 FIFO 40;33	# pipe
@@ -117,8 +117,8 @@ EXEC 01;32
 #.csh 01;32
 
  # archives or compressed (bright red)
-.tar 01;31
-.tgz 01;31
+.tar 01;35
+.tgz 01;35
 .arc 01;31
 .arj 01;31
 .taz 01;31
@@ -130,11 +130,11 @@ EXEC 01;32
 .txz 01;31
 .tzo 01;31
 .t7z 01;31
-.zip 01;31
+.zip 01;35
 .z   01;31
 .Z   01;31
 .dz  01;31
-.gz  01;31
+.gz  01;35
 .lrz 01;31
 .lz  01;31
 .lzo 01;31
