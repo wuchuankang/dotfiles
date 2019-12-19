@@ -29,9 +29,6 @@ map zf za
 " 重新打开文件后，光标会定位在上次编的位置
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
-" 启动 termdebug 插件
-nnoremap <Leader>d :packadd termdebug<CR><ESC>:Termdebug<CR><ESC><c-w>w<c-w>w<c-w>H
-
 
 autocmd FileType markdown inoremap ` ``````<left><left><left>python<cr><Esc>O
 autocmd FileType markdown inoremap *  ****<left><left>
@@ -90,7 +87,7 @@ map q :bd<CR>  " 关闭当前的窗口
 nnoremap ; :noh<CR>    
 " 用于前进到尾部和头部
 nnoremap e $
-"nnoremap w ^
+nnoremap w ^
 
 "因为后面的tagbar要用方向建进行上下移动，所以这里不进行映射
 "map <up> :res +5<CR>  "
@@ -191,7 +188,7 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'Shougo/echodoc.vim'
 " 为C++ 文件提供颜色支持
 Plug 'octol/vim-cpp-enhanced-highlight'
-" 将编辑的程序回滚到上一个/上几个状态上, 通过g来召唤
+" 将编辑的程序回滚到上一个/上几个状态上, 通过W来召唤
 Plug 'mbbill/undotree'
 " 显示更改的文件内容，但是必须是在git仓库中，否则不会显示更改的内容
 " 通过 git init 可以讲文件初始化为仓库，通过 git add .; git commit -m "xxx";
@@ -208,6 +205,8 @@ Plug 'airblade/vim-gitgutter'
 Plug 'joshdick/onedark.vim'
 " 各种语法高亮
 Plug 'sheerun/vim-polyglot'
+" gdb 插件
+"Plug 'cgdb/cgdb'
 call plug#end()
 
 " ===
@@ -282,6 +281,8 @@ let g:webdevicons_enable = 1
 let g:webdevicons_enable_nerdtree = 1
 let g:webdevicons_enable_airline_tabline = 1
 let g:webdevicons_enable_airline_statusline = 1
+
+
 "===
 "=== ale
 "===
@@ -313,11 +314,6 @@ let g:ale_linters = {
 let g:ale_c_gcc_executable = '/usr/bin/gcc'
 let b:ale_fixers = ['autopep8', 'yapf']
 
-
-"===
-"=== Taglist
-"===
-nmap <silent> T  :TagbarToggle<CR>
 
 
 "===
@@ -401,7 +397,7 @@ let g:ycm_key_invoke_completion = '<c-z>'
 set completeopt=menu,menuone
 " 用于函数参数的补全，但是会弹出预览窗口
 let g:ycm_add_preview_to_completeopt = 0
-"noremap <c-z> <NOP>
+noremap <c-z> <NOP>
 
 let g:ycm_semantic_triggers =  {
            \ 'c,cpp,python,markdown,java,go,erlang,perl': ['re!\w{2}'],
@@ -456,7 +452,7 @@ let g:cpp_posix_standard = 1
 "===
 "=== undotree
 "===
-noremap g :UndotreeToggle<CR>
+noremap W :UndotreeToggle<CR>
 let g:undotree_DiffAutoOpen = 1
 let g:undotree_SetFocusWhenToggle = 1
 let g:undotree_ShortIndicators = 1
@@ -519,6 +515,11 @@ if (empty($TMUX))
   endif
 endif
 
-syntax on
 colorscheme onedark
 
+"===
+"=== termdebug 是内置插件，不需要进行安装
+"=== 要使得gdb窗口回到normal模式下，可以说使用 ctrl+\
+"=== ctrl+n，然后使用<leader>+j k l i 等进行窗口切换，也可使用ctrl+w w 切换
+"let g:termdebug_wide = 163 
+nnoremap <Leader>d :packadd termdebug<CR><ESC>:Termdebug<CR><ESC><c-w>w<c-w>w<c-w>H

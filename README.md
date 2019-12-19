@@ -24,6 +24,7 @@ sudo pacman -S clang
 sudo pacman -S gcc
 sudo pacman -S checkcpp
 sudo pacman -S wps-office
+sudo pacman -S smplayer #视频播放器
 sudo pacman -S clang make cmake gdb    # 编译调试环境
 sudo pacman -S netease-cloud-music     # 网易云音乐
 
