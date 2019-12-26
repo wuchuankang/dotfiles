@@ -30,8 +30,8 @@ map zf za
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
 
-autocmd FileType markdown inoremap ` ``````<left><left><left>python<cr><Esc>O
-autocmd FileType markdown inoremap *  ****<left><left>
+autocmd FileType markdown inoremap ` ``````<left><left><left>cpp<cr><Esc>O
+"autocmd FileType markdown inoremap *  ****<left><left>
 "用于在文字上添加删除线
 "autocmd FileType markdown inoremap ~ ~~~~<left><left>  
 autocmd FileType markdown inoremap $ $$<left>
@@ -48,7 +48,12 @@ autocmd FileType python nmap <leader>; o""""""""<left><left><left><cr><Esc>O
 map <LEADER>rc :e ~/.config/nvim/init.vim<CR>
 
 " C++ 中添加{}
-imap <C-j> <Esc>A{
+imap <C-j> <Esc>A{<CR><Esc>O
+"imap { {}<ESC>h<CR><ESC>O
+
+" 删除()中的内容，dh(
+" 删除()中以及括号， da(
+" 其他符号中删除方法类似，只是将（改成相应的符号即可
 
 
 noremap j h
@@ -59,9 +64,8 @@ noremap H I
 noremap J 7h
 noremap I 5k
 noremap K 5j
+"noremap s 5j
 noremap L 7l
-
-imap{ {}<ESC>h<CR><ESC>O
 
 map ! :q!<CR>
 map s <nop>
@@ -100,16 +104,16 @@ map t :call CompileRunGcc()<CR>
 func! CompileRunGcc()
   exec "w"
   if &filetype == 'c'
-    exec "!g++ % -o %<"
-    exec "!time ./%<"
+    exec "!gcc % -o %<"
+    exec "! ./%<"
   elseif &filetype == 'cpp'
     exec "!g++ % -o %<"
-    exec "!time ./%<"
+    exec "! ./%<"
   elseif &filetype == 'java'
     exec "!javac %"
     exec "!time java %<"
   elseif &filetype == 'sh'
-    :!time bash %
+    :! bash %
   elseif &filetype == 'python'
     set splitbelow
     ":vsp
@@ -523,3 +527,8 @@ colorscheme onedark
 "=== ctrl+n，然后使用<leader>+j k l i 等进行窗口切换，也可使用ctrl+w w 切换
 "let g:termdebug_wide = 163 
 nnoremap <Leader>d :packadd termdebug<CR><ESC>:Termdebug<CR><ESC><c-w>w<c-w>w<c-w>H
+" K 在上面已经map 为 快速向下翻页，而在 termdebug 中K
+" 等价与:Evaluate，所以这里将:Evaluate 重新map，   补充：结果是不行的，B
+" 可以map，但是K 仍然是 :Evaluate ,仍然会覆盖掉之前的，:Evaluate
+" 作用是在debug过程中，运行到某一步之前的所有的变量都可以将光标放在变量上面，按住K就可以查看变量值。
+"noremap <silent> B :Evaluate<cr>
