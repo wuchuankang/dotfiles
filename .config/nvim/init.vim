@@ -4,6 +4,12 @@ syntax on
 " 让leader 键映射为空格键
 let mapleader=" " 
 
+" 当 Vim 从磁盘上读取文件的时候，会对文件的编码进行探测。如果文件的编码方式和 Vim 的内部编码方式不同，Vim 就会对编码进行转换。转换完毕后，Vim 会将 fileencoding 选项设置为文件的编码。通过打开文件后设置 fileencoding，我们可以将文件由一种编码转换为另一种编码。但是，由前面的介绍可以看出，fileencoding 是在打开文件的时候，由 Vim 进行探测后自动设置的。因此，如果出现乱码，我们无法通过在打开文件后重新设置 fileencoding 来纠正乱码。
+" 编码的自动识别是通过设置 fileencodings 实现的，它是一个用逗号分隔的列表，列表中的每一项是一种编码的名称。当我们打开文件的时候，VIM 按顺序使用 fileencodings 中的编码进行尝试解码，如果成功的话，就使用该编码方式进行解码，并将 fileencoding 设置为这个值，如果失败的话，就继续试验下一个编码。
+" latin1 是一种非常宽松的编码方式，任何一种编码方式得到的文本，用 latin1 进行解码，都不会发生解码失败，当然解码得到的结果自然也就是理所当然的“乱码”。
+set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
+
+
 set smartindent
 set expandtab
 set ignorecase
@@ -54,6 +60,8 @@ imap <C-j> <Esc>A{<CR><Esc>O
 " 删除()中的内容，dh(
 " 删除()中以及括号， da(
 " 其他符号中删除方法类似，只是将（改成相应的符号即可
+"
+" 多行操作说明： ctrl+v -> H -> 输入或者缩进 -> esc
 
 
 noremap j h
