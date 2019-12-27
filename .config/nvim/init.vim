@@ -52,6 +52,8 @@ autocmd FileType python nmap <leader>; o""""""""<left><left><left><cr><Esc>O
 " <cr>是回车
 " Open the vimrc file anytime
 map <LEADER>rc :e ~/.config/nvim/init.vim<CR>
+" Open the snippets file anytime
+map <LEADER>sp :e ~/.vim/plugged/vim-snippets/Ultisnips/cpp.snippets<CR>
 
 " C++ 中添加{}
 imap <C-j> <Esc>A{<CR><Esc>O
@@ -183,8 +185,6 @@ Plug 'Raimondi/delimitMate'
 " 显示标题栏，比如在一个tab中打开多个文件，在vim上方显示文件信息，下方显示当前文件信息
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-" vim颜色配置
-"Plug 'connorholyday/vim-snazzy'
 " 代码自动补全
 Plug 'Valloric/YouCompleteMe'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -214,11 +214,18 @@ Plug 'airblade/vim-gitgutter'
 "
 "Plug 'chrisbra/Colorizer'
 " vim颜色配置
+"Plug 'connorholyday/vim-snazzy'
 Plug 'joshdick/onedark.vim'
 " 各种语法高亮
 Plug 'sheerun/vim-polyglot'
 " gdb 插件
 "Plug 'cgdb/cgdb'
+
+" Snippets 对程序中重复出现的片段，能够使用快捷键快速的实现
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+" 浏览代码时候，光标在哪一个变量上，会在该变量下方加下划线，这样能够看清该变量用在哪些地方
+Plug 'itchyny/vim-cursorword'
 call plug#end()
 
 " ===
@@ -527,6 +534,18 @@ if (empty($TMUX))
   endif
 endif
 
+"set termguicolors   " 启用它后，在terminal 和 tmux
+"下颜色都是一样的，当前是在terminal 下 背景是暗光，在tmux 下是纯黑的
+let g:onedark_termcolors=256
+"onedark.vim override: Set a custom background color in the terminal
+if (has("autocmd") && !has("gui_running"))
+  augroup colors
+    autocmd!
+    let s:background = { "gui": "#282C34", "cterm": "235", "cterm16": "0" }
+    autocmd ColorScheme * call onedark#set_highlight("Normal", { "bg": s:background }) "No `fg` setting
+  augroup END
+endif
+
 colorscheme onedark
 
 "===
@@ -540,3 +559,21 @@ nnoremap <Leader>d :packadd termdebug<CR><ESC>:Termdebug<CR><ESC><c-w>w<c-w>w<c-
 " 可以map，但是K 仍然是 :Evaluate ,仍然会覆盖掉之前的，:Evaluate
 " 作用是在debug过程中，运行到某一步之前的所有的变量都可以将光标放在变量上面，按住K就可以查看变量值。
 "noremap <silent> B :Evaluate<cr>
+
+
+" ===
+" === Ultisnips
+" ===
+let g:tex_flavor = "latex"
+inoremap <c-n> <nop>
+let g:UltiSnipsExpandTrigger="<c-e>"    " 触发 snippets 
+let g:UltiSnipsJumpForwardTrigger="<c-e>"   " 跳转到下一个变量的占位符
+let g:UltiSnipsJumpBackwardTrigger="<c-n>"  " 跳回上一个
+let g:UltiSnipsSnippetDirectories = [$HOME.'/.vim/plugged/vim-snippets/Ultisnips/', 'UltiSnips']
+silent! au BufEnter,BufRead,BufNewFile * silent! unmap <c-r>
+" head: 添加头文件
+" cl : 添加类
+" cla ： 在类设置在类对应的头文件中
+" 具体的设置在 ~/.vim/plugged/vim-snippets/Ultisnips/cpp.snippets
+" 中进行修改或者自定义，当然该路径下还有其他类型语言(如Python、c等)的 snippets
+" ，进行相应的查看修改即可
