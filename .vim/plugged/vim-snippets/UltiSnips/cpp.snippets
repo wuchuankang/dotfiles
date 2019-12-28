@@ -41,7 +41,8 @@ private:
 
 public:
 	${1/(\w+).*/$1/} ();
-	virtual ~${1/(\w+).*/$1/} ();
+	${1/(\w+).*/$1/} (const ${1/(\w+).*/$1/}&);
+	~${1/(\w+).*/$1/} ();
 };
 endsnippet
 
@@ -101,8 +102,7 @@ snippet fnc "Basic c++ doxygen function template" b
 *
 * @return: `!p snip.rv = t[1]`
 */
-${1:ReturnType} ${2:FunctionName}(${3:param})
-{
+${1:ReturnType} ${2:FunctionName}(${3:param}){
 	${0:FunctionBody}
 }
 endsnippet
@@ -111,7 +111,7 @@ endsnippet
 # 我的自定义
 snippet main "main function generator"
 int main(int argc, char *argv[]){
-	${1:}
+	${1}
 	
 	return 0;
 }
@@ -119,9 +119,21 @@ endsnippet
 
 snippet head "inlcude header"
 #include <iostream>
-${1:}
-
+${1}
 using namespace std;
+endsnippet
+
+snippet for "for loop"
+for(int i=0; i<${1:n}; i++){
+	${0}
+}
+endsnippet
+
+
+snippet fun "Basic c++ doxygen function template" b
+${1:ReturnType} ${2:FunctionName}(${3:param}){
+	${0:FunctionBody}
+}
 endsnippet
 
 #UltiSnips自定义snippet的语法为:snippet trigger_word ["description" [options] ]
