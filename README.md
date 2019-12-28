@@ -27,6 +27,8 @@ sudo pacman -S wps-office
 sudo pacman -S smplayer #视频播放器
 sudo pacman -S clang make cmake gdb    # 编译调试环境
 sudo pacman -S netease-cloud-music     # 网易云音乐
+sudo pacman -S the_silver_searcher     # 依据文件内容查找工具，与 fzf 配合使用 
+
 
 安装cgdb所需依赖：
    sudo pacman -S sh

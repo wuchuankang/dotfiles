@@ -30,6 +30,7 @@ set backspace=indent,eol,start
 set shiftwidth=4
 set foldmethod=indent "依据indent缩进方式折叠代码"
 set foldlevel=99
+
 " 将折叠命令改为zf，展开可以用zr，也可以zm
 map zf za   
 " 重新打开文件后，光标会定位在上次编的位置
@@ -100,8 +101,10 @@ map q :bd<CR>  " 关闭当前的窗口
 "将取消高亮设置map为;
 nnoremap ; :noh<CR>    
 " 用于前进到尾部和头部
-nnoremap e $
-nnoremap w ^
+nnoremap e b
+" 因为vim 默认的 b 是上个单词， w 是下一个单词，这里 e 和 w 靠的近，所以将 e
+" 映射为b
+" $ 是行末尾，0 是行首， ^ 是该行第一个字符处
 
 "因为后面的tagbar要用方向建进行上下移动，所以这里不进行映射
 "map <up> :res +5<CR>  "
@@ -226,6 +229,9 @@ Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 " 浏览代码时候，光标在哪一个变量上，会在该变量下方加下划线，这样能够看清该变量用在哪些地方
 Plug 'itchyny/vim-cursorword'
+" 快速查询文件插件
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 call plug#end()
 
 " ===
@@ -534,17 +540,19 @@ if (empty($TMUX))
   endif
 endif
 
-"set termguicolors   " 启用它后，在terminal 和 tmux
+set termguicolors   " 启用它后，在terminal 和 tmux
 "下颜色都是一样的，当前是在terminal 下 背景是暗光，在tmux 下是纯黑的
-let g:onedark_termcolors=256
+"let g:onedark_termcolors=256
 "onedark.vim override: Set a custom background color in the terminal
-if (has("autocmd") && !has("gui_running"))
-  augroup colors
-    autocmd!
-    let s:background = { "gui": "#282C34", "cterm": "235", "cterm16": "0" }
-    autocmd ColorScheme * call onedark#set_highlight("Normal", { "bg": s:background }) "No `fg` setting
-  augroup END
-endif
+
+"if (has("autocmd") && !has("gui_running"))
+  "augroup colors
+    "autocmd!
+    "let s:background = { "gui": "#282C34", "cterm": "235", "cterm16": "0" }
+    "autocmd ColorScheme * call onedark#set_highlight("Normal", { "bg": s:background }) "No `fg` setting
+  "augroup END
+"endif
+
 
 colorscheme onedark
 
@@ -566,10 +574,11 @@ nnoremap <Leader>d :packadd termdebug<CR><ESC>:Termdebug<CR><ESC><c-w>w<c-w>w<c-
 " ===
 let g:tex_flavor = "latex"
 inoremap <c-n> <nop>
-let g:UltiSnipsExpandTrigger="<c-e>"    " 触发 snippets 
-let g:UltiSnipsJumpForwardTrigger="<c-e>"   " 跳转到下一个变量的占位符
+let g:UltiSnipsExpandTrigger="<c-c>"    " 触发 snippets 
+let g:UltiSnipsJumpForwardTrigger="<c-c>"   " 跳转到下一个变量的占位符
 let g:UltiSnipsJumpBackwardTrigger="<c-n>"  " 跳回上一个
 let g:UltiSnipsSnippetDirectories = [$HOME.'/.vim/plugged/vim-snippets/Ultisnips/', 'UltiSnips']
+"let g:UltiSnipsSnippetDirectories = ['~/.config/nvim/Ultisnips/', 'UltiSnips']
 silent! au BufEnter,BufRead,BufNewFile * silent! unmap <c-r>
 " head: 添加头文件
 " cl : 添加类
@@ -577,3 +586,62 @@ silent! au BufEnter,BufRead,BufNewFile * silent! unmap <c-r>
 " 具体的设置在 ~/.vim/plugged/vim-snippets/Ultisnips/cpp.snippets
 " 中进行修改或者自定义，当然该路径下还有其他类型语言(如Python、c等)的 snippets
 " ，进行相应的查看修改即可
+
+
+" ===
+" === FZF
+" ===
+noremap <C-p> :FZF<CR>
+noremap <C-f> :Ag<CR>
+noremap <C-h> :MRU<CR>      
+noremap <C-t> :BTags<CR>
+noremap <C-l> :LinesWithPreview<CR>
+noremap <C-w> :Buffers<CR>
+noremap q; :History:<CR>
+
+autocmd! FileType fzf
+autocmd  FileType fzf set laststatus=0 noruler
+  \| autocmd BufLeave <buffer> set laststatus=2 ruler
+
+command! -bang -nargs=* Buffers
+  \ call fzf#vim#buffers(
+  \   '',
+  \   <bang>0 ? fzf#vim#with_preview('up:60%')
+  \           : fzf#vim#with_preview('right:0%', '?'),
+  \   <bang>0)
+
+
+command! -bang -nargs=* LinesWithPreview
+    \ call fzf#vim#grep(
+    \   'rg --with-filename --column --line-number --no-heading --color=always --smart-case . '.fnameescape(expand('%')), 1,
+    \   fzf#vim#with_preview({}, 'up:50%', '?'),
+    \   1)
+
+command! -bang -nargs=* Ag
+  \ call fzf#vim#ag(
+  \   '',
+  \   <bang>0 ? fzf#vim#with_preview('up:60%')
+  \           : fzf#vim#with_preview('right:50%', '?'),
+  \   <bang>0)
+
+" 在历史文件中查找，并预览
+command! -bang -nargs=* MRU call fzf#vim#history(fzf#vim#with_preview())
+
+command! -bang BTags
+  \ call fzf#vim#buffer_tags('', {
+  \     'down': '40%',
+  \     'options': '--with-nth 1 
+  \                 --reverse 
+  \                 --prompt "> " 
+  \                 --preview-window="70%" 
+  \                 --preview "
+  \                     tail -n +\$(echo {3} | tr -d \";\\\"\") {2} |
+  \                     head -n 16"'
+  \ })
+"使用CTRL-J/CTRL-K（或者CTRL-N/CTRL-P）进行上下选择
+"使用Enter选中条目，CTRL-CCTRTRL-G/ESC`进行退出操作
+"精确文件匹配，在文件前面加 '， 比如精确搜索init.vim， 可以输入 'init.vim
+" 将文件路径在vim 命令：Files 路径名 ,设置好工作路径之后，在使用 ag
+" 来搜索某个变量或者函数或者类在哪些文件中使用，就方便多了；
+" 如果不设置好路径，那么就是在当前路径下依据文件内容进行搜索，那么就会出现很多不与当前工程(程序相关的)
+" 的文件，因为那些文件中也可能存在要搜索的内容
