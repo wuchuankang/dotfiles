@@ -40,10 +40,28 @@ private:
 	${0:}
 
 public:
-	${1/(\w+).*/$1/} ();
-	${1/(\w+).*/$1/} (const ${1/(\w+).*/$1/}&);
-	~${1/(\w+).*/$1/} ();
+	${1/(\w+).*/$1/}();
+	${1/(\w+).*/$1/}(const ${1/(\w+).*/$1/}&);
+	${1/(\w+).*/$1/} &operator=(const ${1/(\w+).*/$1/}&);
+	~${1/(\w+).*/$1/}();
 };
+
+${1/(\w+).*/$1/}::${1/(\w+).*/$1/}(){
+	
+}
+
+${1/(\w+).*/$1/}::${1/(\w+).*/$1/}(const ${1/(\w+).*/$1/}&){
+	
+}
+
+${1/(\w+).*/$1/} &${1/(\w+).*/$1/}::operator=(const ${1/(\w+).*/$1/}&){
+	
+	return *this;
+}
+
+${1/(\w+).*/$1/}::~${1/(\w+).*/$1/}(){
+	
+}
 endsnippet
 
 snippet ns "namespace .. (namespace)"
@@ -134,6 +152,10 @@ snippet fun "Basic c++ doxygen function template" b
 ${1:ReturnType} ${2:FunctionName}(${3:param}){
 	${0:FunctionBody}
 }
+endsnippet
+
+snippet co "cout"
+cout<<${1}<<endl;
 endsnippet
 
 #UltiSnips自定义snippet的语法为:snippet trigger_word ["description" [options] ]
