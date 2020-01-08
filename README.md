@@ -7,7 +7,8 @@ sudo pacman -S yay  #是另外一种manjaro安装软件的方式
 sudo pacman -S htop
 sudo pacman -S axel  #多线程下载 比wget好用多了
 sudo pacman -S flameshot  # 截图软件
-sudo pacman -S fish
+<!--sudo pacman -S fish--> // 不使用fish，改换为zsh
+sudo pacman -S zsh
 sudo pacman -S tmux
 sudo pacman -S vim
 sudo pacman -S neovim
