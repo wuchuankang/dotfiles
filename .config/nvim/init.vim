@@ -41,8 +41,8 @@ autocmd FileType markdown inoremap ` ``````<left><left><left>cpp<cr><Esc>O
 "autocmd FileType markdown inoremap *  ****<left><left>
 "用于在文字上添加删除线
 "autocmd FileType markdown inoremap ~ ~~~~<left><left>  
-autocmd FileType markdown inoremap $ $$<left>
-autocmd FileType markdown nmap $ h$$<cr><Esc>O
+"autocmd FileType markdown inoremap $ $$<left>
+autocmd FileType markdown inoremap $ h$$<cr><Esc>O
 autocmd FileType markdown imap { {}<left>
 autocmd FileType markdown imap <  <
 autocmd FileType python inoremap ; :
@@ -75,7 +75,6 @@ noremap H I
 noremap J 7h
 noremap I 5k
 noremap K 5j
-"noremap s 5j
 noremap L 7l
 
 map ! :q!<CR>
@@ -93,6 +92,7 @@ map <LEADER>j <C-w>h
 map <LEADER>i <C-w>k
 map <LEADER>k <C-w>j
 map <LEADER>l  <C-w>l
+
 " 用于在同一个tab中打开的多个文档进行跳转
 map m :bp<CR>  "跳转到上一个
 map n :bn<CR>
@@ -100,8 +100,8 @@ map q :bd<CR>  " 关闭当前的窗口
 
 "将取消高亮设置map为;
 nnoremap ; :noh<CR>    
-" 用于前进到尾部和头部
-nnoremap e b
+nnoremap e w
+nnoremap w b
 " 因为vim 默认的 b 是上个单词， w 是下一个单词，这里 e 和 w 靠的近，所以将 e
 " 映射为b
 " $ 是行末尾，0 是行首， ^ 是该行第一个字符处
@@ -167,6 +167,7 @@ Plug 'heavenshell/vim-pydocstring'
 " markdown 
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 Plug 'iamcco/mathjax-support-for-mkdp' " 为markdown提供公式支持
+   
 " 各种对齐，使用方法是在visual模式下选中，然后输入：tabu 使用tab键补全，然后
 " /= 就是将等号对齐，依次类推
 Plug 'godlygeek/tabular'
@@ -190,10 +191,10 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 " 代码自动补全
 Plug 'Valloric/YouCompleteMe'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+"Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " 语法检查插件
 Plug 'dense-analysis/ale'
-" 进行多行编辑
+" 进行多行编辑，可以对同一个变量名的多处进行统一重构
 Plug 'terryma/vim-multiple-cursors'
 " 为python提供语义高亮
 "Plug 'numirias/semshi', { 'do': ':UpdateRemotePlugins' }
@@ -232,7 +233,9 @@ Plug 'itchyny/vim-cursorword'
 " 快速查询文件插件
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+
 call plug#end()
+
 
 " ===
 " === Python-syntax
@@ -278,6 +281,16 @@ let g:indent_guides_color_change_percent = 1
 silent! unmap <LEADER>ig
 autocmd WinEnter * silent! unmap <LEADER>ig
 
+"===
+"=== markdown
+"===
+nmap <leader>c :Toc<CR> <left><left><left><left><left><left><left><left>
+"[[ "跳转上一个标题
+"]] "跳转下一个标题
+"]c "跳转到当前标题
+"]u "跳转到副标题
+":Toc "显示目录
+ 
 
 "===
 "=== nerdtree
@@ -383,6 +396,8 @@ let g:tagbar_autofocus = 1
 "===
 "=== multi_cursor
 "===
+" 使用方法，对于refactor(重构)变量名， 使用CTRL+n
+" 进行变量选择，要改几个就按ctrl+n, 然后按 c ，就可以更改了
 let g:multi_cursor_use_default_mapping=0
 " Default mapping
 let g:multi_cursor_start_word_key      = '<C-n>'
@@ -419,6 +434,15 @@ let g:ycm_collect_identifiers_from_comments_and_strings = 1
 let g:ycm_complete_in_strings=1
 let g:ycm_autoclose_preview_window_after_completion = 0
 let g:ycm_key_invoke_completion = '<c-z>'
+" 开启语义补全
+let g:ycm_seed_identifiers_with_syntax=1	
+let g:ycm_collect_identifiers_from_tags_files = 1
+"开启基于tag的补全，可以在这之后添加需要的标签路径
+let g:ycm_collect_identifiers_from_tags_files = 1
+"开始补全的字符数
+let g:ycm_min_num_of_chars_for_completion = 2
+"在注释输入中也能补全
+let g:ycm_complete_in_comments = 1
 set completeopt=menu,menuone
 " 用于函数参数的补全，但是会弹出预览窗口
 let g:ycm_add_preview_to_completeopt = 0
@@ -428,33 +452,42 @@ let g:ycm_semantic_triggers =  {
            \ 'c,cpp,python,markdown,java,go,erlang,perl': ['re!\w{2}'],
            \ 'cs,lua,javascript': ['re!\w{2}'],
            \ }
-
+" 定义白名单
+let g:ycm_filetype_whitelist = { 
+			\ "c":1,
+			\ "cpp":1, 
+			\ "objc":1,
+			\ "sh":1,
+			\ "vim":1,
+			\ "zsh":1,
+			\ "zimbu":1,
+			\ }
 
 " ===
 " === coc
 " ===
 " fix the most annoying bug that coc has
-silent! au BufEnter,BufRead,BufNewFile * silent! unmap if
-let g:coc_global_extensions = ['coc-python', 'coc-vimlsp', 'coc-html', 'coc-json', 'coc-css', 'coc-tsserver', 'coc-yank', 'coc-lists', 'coc-gitignore', 'coc-vimlsp', 'coc-tailwindcss', 'coc-stylelint']
-set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
-" use <tab> for trigger completion and navigate to the next complete item
-function! s:check_back_space() abort
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1]	=~ '\s'
-endfunction
-inoremap <silent><expr> <Tab>
-            \ pumvisible() ? "\<C-n>" :
-            \ <SID>check_back_space() ? "\<Tab>" :
-            \ coc#refresh()
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <silent><expr> <c-space> coc#refresh()
-" Useful commands
-nnoremap <silent> <space>y :<C-u>CocList -A --normal yank<cr>
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-nmap <leader>rn <Plug>(coc-rename)
+"silent! au BufEnter,BufRead,BufNewFile * silent! unmap if
+"let g:coc_global_extensions = ['coc-python', 'coc-vimlsp', 'coc-html', 'coc-json', 'coc-css', 'coc-tsserver', 'coc-yank', 'coc-lists', 'coc-gitignore', 'coc-vimlsp', 'coc-tailwindcss', 'coc-stylelint']
+"set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+"" use <tab> for trigger completion and navigate to the next complete item
+"function! s:check_back_space() abort
+    "let col = col('.') - 1
+    "return !col || getline('.')[col - 1]	=~ '\s'
+"endfunction
+"inoremap <silent><expr> <Tab>
+            "\ pumvisible() ? "\<C-n>" :
+            "\ <SID>check_back_space() ? "\<Tab>" :
+            "\ coc#refresh()
+"inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+"inoremap <silent><expr> <c-space> coc#refresh()
+"" Useful commands
+"nnoremap <silent> <space>y :<C-u>CocList -A --normal yank<cr>
+"nmap <silent> gd <Plug>(coc-definition)
+"nmap <silent> gy <Plug>(coc-type-definition)
+"nmap <silent> gi <Plug>(coc-implementation)
+"nmap <silent> gr <Plug>(coc-references)
+"nmap <leader>rn <Plug>(coc-rename)
 
 
 "===
@@ -583,9 +616,11 @@ silent! au BufEnter,BufRead,BufNewFile * silent! unmap <c-r>
 " head: 添加头文件
 " cl : 添加类
 " cla ： 在类设置在类对应的头文件中
+" fun : 函数
 " 具体的设置在 ~/.vim/plugged/vim-snippets/Ultisnips/cpp.snippets
 " 中进行修改或者自定义，当然该路径下还有其他类型语言(如Python、c等)的 snippets
 " ，进行相应的查看修改即可
+
 
 
 " ===
@@ -596,7 +631,7 @@ noremap <C-f> :Ag<CR>
 noremap <C-h> :MRU<CR>      
 noremap <C-t> :BTags<CR>
 noremap <C-l> :LinesWithPreview<CR>
-noremap <C-w> :Buffers<CR>
+"noremap <C-w> :Buffers<CR>  //这个和跳换窗口冲突
 noremap q; :History:<CR>
 
 autocmd! FileType fzf
@@ -645,3 +680,10 @@ command! -bang BTags
 " 来搜索某个变量或者函数或者类在哪些文件中使用，就方便多了；
 " 如果不设置好路径，那么就是在当前路径下依据文件内容进行搜索，那么就会出现很多不与当前工程(程序相关的)
 " 的文件，因为那些文件中也可能存在要搜索的内容
+"
+"路径自动补全，<c-x><c-f> 是vim 默认的补全文件路径的快捷键，把它映射为 fzf
+"查找路径的方式，再将 <c-x><c-f> 循环映射为 ctrl+z， 这样就方便多了。
+imap <c-z> <c-x><c-f>
+imap <c-x><c-f> <plug>(fzf-complete-path)
+
+
