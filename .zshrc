@@ -24,7 +24,6 @@ alias egrep='egrep --color=auto'
 fi
 
 
-
 # git theming，关于git目录的提示符号配置
 ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg_bold[blue]%}(%{$fg_no_bold[yellow]%}%B"
 #ZSH_THEME="ys"
@@ -74,7 +73,6 @@ POWERLEVEL9K_COMMAND_EXECUTION_TIME_BACKGROUND='clear'
 POWERLEVEL9K_COMMAND_EXECUTION_TIME_FOREGROUND='magenta'
 POWERLEVEL9K_BACKGROUND_JOBS_BACKGROUND='clear'
 POWERLEVEL9K_BACKGROUND_JOBS_FOREGROUND='white'
-
 
 source $ZSH/oh-my-zsh.sh
 
@@ -155,7 +153,10 @@ bindkey -M vicmd "e" vi-forward-word
 # fzf
 export FZF_DEFAULT_OPTS='--bind ctrl-k:down,ctrl-i:up --preview "[[ $(file --mime {}) =~ binary ]] && echo {} is a binary file || (ccat --color=always {} || highlight -O ansi -l {} || cat {}) 2> /dev/null | head -500"'
 export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -g ""'
-export FZF_COMPLETION_TRIGGER='\'    #使用cd \ <tab> 就可以使用了， ctrl+i:向上选择，Ctrl+k 向下选择
+export FZF_COMPLETION_TRIGGER='f'    #使用cd f <tab> 就可以使用了， ctrl+i:向上选择，Ctrl+k 向下选择
+# 使用 ctrl+f 一样能够打开 fzf, cd ctrl+t 可以实现上面一样的效果
+# 在命令行下按下ctrl-f会打开fzf窗口，如果你选中某个条目并按下Enter
+# 在命令行下按下ctrl-h, fzf会列出history命令，选中条目并离开fzf的话， 选中条目会被拷到命令行上
 export FZF_TMUX_HEIGHT='80%'
 export FZF_PREVIEW_COMMAND='[[ $(file --mime {}) =~ binary ]] && echo {} is a binary file || (ccat --color=always {} || highlight -O ansi -l {} || cat {}) 2> /dev/null | head -500'
 source ~/.config/zsh/key-bindings.zsh
