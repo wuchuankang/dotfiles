@@ -2,13 +2,14 @@
 这个是本人在manjaro上的配置
 
 ### install app
-```vim
+```bash
 sudo pacman -S yay  #是另外一种manjaro安装软件的方式
 sudo pacman -S htop
 sudo pacman -S axel  #多线程下载 比wget好用多了
 sudo pacman -S flameshot  # 截图软件
 <!--sudo pacman -S fish--> // 不使用fish，改换为zsh
 sudo pacman -S zsh
+sudo pacman -S lazygit      //可视化的git管理
 sudo pacman -S tmux
 sudo pacman -S vim
 sudo pacman -S neovim
@@ -47,10 +48,12 @@ sudo pacman -S the_silver_searcher     # 依据文件内容查找工具，与 fz
 - 要补全头文件，参见init.vim中ycm配置
 
 
-### fish 配置
+### zsh 配置
 
-- fish_config
-- chsh -s /usr/bin/fish  :将fish设置为默认shell
+- chsh -s /usr/bin/zsh  :将fish设置为默认shell
+
+- curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
+(上面是管理终端的插件)
 
 ### neovim
 
