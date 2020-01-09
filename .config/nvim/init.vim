@@ -36,8 +36,8 @@ map zf za
 " 重新打开文件后，光标会定位在上次编的位置
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
-
-autocmd FileType markdown inoremap ` ``````<left><left><left>cpp<cr><Esc>O
+autocmd FileType markdown  nmap <leader>` h````````<left><left><left>cpp<cr><Esc>O
+" 在 markdown.snippets 中进行了定义， cpp +ctrl+c
 "autocmd FileType markdown inoremap *  ****<left><left>
 "用于在文字上添加删除线
 "autocmd FileType markdown inoremap ~ ~~~~<left><left>  
