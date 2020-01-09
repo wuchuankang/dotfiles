@@ -95,8 +95,8 @@ SETUID 37;41	# file that is setuid (u+s)
 SETGID 30;43	# file that is setgid (g+s)
 CAPABILITY 30;41	# file with capability
 STICKY_OTHER_WRITABLE 30;42 # dir that is sticky and other-writable (+t,o+w)
-OTHER_WRITABLE 34;41 # dir that is other-writable (o+w) and not sticky
-STICKY 37;48	# dir with the sticky bit set (+t) and not other-writable
+OTHER_WRITABLE 34;42 # dir that is other-writable (o+w) and not sticky
+STICKY 37;44	# dir with the sticky bit set (+t) and not other-writable
 
 # This is for files with execute permission:
 EXEC 01;32
@@ -117,8 +117,8 @@ EXEC 01;32
 #.csh 01;32
 
  # archives or compressed (bright red)
-.tar 01;35
-.tgz 01;35
+.tar 01;33
+.tgz 01;33
 .arc 01;31
 .arj 01;31
 .taz 01;31
@@ -130,11 +130,11 @@ EXEC 01;32
 .txz 01;31
 .tzo 01;31
 .t7z 01;31
-.zip 01;35
+.zip 01;33
 .z   01;31
 .Z   01;31
 .dz  01;31
-.gz  01;35
+.gz  01;33
 .lrz 01;31
 .lz  01;31
 .lzo 01;31
@@ -160,25 +160,25 @@ EXEC 01;32
 .cab 01;31
 
 # image formats
-.jpg 01;35
+.jpg 01;32
 .jpeg 01;35
-.gif 01;35
-.bmp 01;35
-.pbm 01;35
+.gif 01;32
+.bmp 01;32
+.pbm 01;32
 .pgm 01;35
 .ppm 01;35
 .tga 01;35
 .xbm 01;35
 .xpm 01;35
-.tif 01;35
+.tif 01;32
 .tiff 01;35
-.png 01;35
+.png 01;32
 .svg 01;35
 .svgz 01;35
 .mng 01;35
 .pcx 01;35
 .mov 01;35
-.mpg 01;35
+.mpg 01;32
 .mpeg 01;35
 .m2v 01;35
 .mkv 01;35
@@ -190,7 +190,7 @@ EXEC 01;32
 .vob 01;35
 .qt  01;35
 .nuv 01;35
-.wmv 01;35
+.wmv 01;32
 .asf 01;35
 .rm  01;35
 .rmvb 01;35
@@ -213,14 +213,14 @@ EXEC 01;32
 .ogx 01;35
 
 # Document files
-.pdf 00;32
+.pdf 00;37
 .ps 00;32
-.txt 00;32
+.txt 00;37
 .patch 00;32
 .diff 00;32
-.log 00;32
+.log 00;37
 .tex 00;32
-.doc 00;32
+.doc 00;37
 
 # audio formats
 .aac 00;36

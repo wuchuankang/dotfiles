@@ -51,7 +51,7 @@ sudo pacman -S the_silver_searcher     # 依据文件内容查找工具，与 fz
 ### zsh 配置
 
 - chsh -s /usr/bin/zsh  :将fish设置为默认shell
-
+- sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"   (安装 oh-my-zsh ，这个是zsh的配置文件)
 - curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
 (上面是管理终端的插件)
 
