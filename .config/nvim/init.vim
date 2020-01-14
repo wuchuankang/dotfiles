@@ -40,9 +40,10 @@ autocmd FileType markdown  nmap <leader>` h````````<left><left><left>cpp<cr><Esc
 " 在 markdown.snippets 中进行了定义， cpp +ctrl+c
 "autocmd FileType markdown inoremap *  ****<left><left>
 "用于在文字上添加删除线
+"下面的这些定义可以使用 snippets 来定义，以防造成键位的混乱
 "autocmd FileType markdown inoremap ~ ~~~~<left><left>  
 "autocmd FileType markdown inoremap $ $$<left>
-autocmd FileType markdown inoremap $ h$$<cr><Esc>O
+"autocmd FileType markdown inoremap $ $$<cr><Esc>O 
 autocmd FileType markdown imap { {}<left>
 autocmd FileType markdown imap <  <
 autocmd FileType python inoremap ; :
@@ -93,11 +94,6 @@ map <LEADER>i <C-w>k
 map <LEADER>k <C-w>j
 map <LEADER>l  <C-w>l
 
-" 用于在同一个tab中打开的多个文档进行跳转
-map m :bp<CR>  "跳转到上一个
-map n :bn<CR>
-map q :bd<CR>  " 关闭当前的窗口
-
 "将取消高亮设置map为;
 nnoremap ; :noh<CR>    
 nnoremap e w
@@ -105,6 +101,11 @@ nnoremap w b
 " 因为vim 默认的 b 是上个单词， w 是下一个单词，这里 e 和 w 靠的近，所以将 e
 " 映射为b
 " $ 是行末尾，0 是行首， ^ 是该行第一个字符处
+
+" 用于在同一个tab中打开的多个文档进行跳转
+map b :bp<CR>  "跳转到上一个
+map n :bn<CR>
+map q :bd<CR>  " 关闭当前的窗口
 
 "因为后面的tagbar要用方向建进行上下移动，所以这里不进行映射
 "map <up> :res +5<CR>  "
@@ -233,8 +234,12 @@ Plug 'itchyny/vim-cursorword'
 " 快速查询文件插件
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-
+"查询库函数的manual
+Plug 'vim-utils/vim-man'
+"翻译
+Plug 'voldikss/vim-translator'
 call plug#end()
+
 
 
 " ===
@@ -242,11 +247,6 @@ call plug#end()
 " ===
 let g:python_highlight_all = 1
 
-
-" ===
-" === Colorizer
-" ===
-"let g:colorizer_syntax = 1
 
 " ===
 " === snazzy
@@ -686,4 +686,26 @@ command! -bang BTags
 imap <c-z> <c-x><c-f>
 imap <c-x><c-f> <plug>(fzf-complete-path)
 
+"===
+"=== vim-man ： 在 normal 模式下，光标在函数或者关键字，按 m 或者 K 皆可以
+"===
+" shift + k : 也是查寻函数manual的
+"nmap m :Man <C-R>=expand("<cword>")<CR><CR>
+nmap m :Vman <C-R>=expand("<cword>")<CR><CR>
+nmap <leader>m :Vman 2 <C-R>=expand("<cword>")<CR><CR>
+"当使用 m ，该函数的解释后面有(n)， 一般是有2个选项的原因，而不知道选择哪一个，这个时候就给出了一个大概的描述，而不是具体的函数说明，要想使用，需要手动，在normal 模式下，：Vman 2 fun， 其中fun是函数名，即可， 现在通过 空格+m， 就可以实现了，不用输入
 
+
+"===
+"=== vim-translator : 在 normal 模式下， 使用 空格+t
+"可以翻译当前光标下的单词； 在 visual下， 选中的内容，使用 空格+t 可以翻译句子
+"===
+" Echo translation in the cmdline
+nmap <silent> <Leader>w <Plug>Translate
+vmap <silent> <Leader>w <Plug>TranslateV
+" Display translation in a window
+nmap <silent> <Leader>t <Plug>TranslateW
+vmap <silent> <Leader>t <Plug>TranslateWV
+" Replace the text with translation
+nmap <silent> <Leader>r <Plug>TranslateR
+vmap <silent> <Leader>r <Plug>TranslateRV
