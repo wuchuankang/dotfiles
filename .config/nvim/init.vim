@@ -75,8 +75,10 @@ noremap h i
 noremap H I
 noremap J 7h
 noremap I 5k
-noremap K 5j
+noremap K 6j
 noremap L 7l
+"因为 shift+k 在man命令中是来查询的，因此<来remap快速向下
+noremap < 5j
 
 map ! :q!<CR>
 map s <nop>
@@ -93,6 +95,8 @@ map <LEADER>j <C-w>h
 map <LEADER>i <C-w>k
 map <LEADER>k <C-w>j
 map <LEADER>l  <C-w>l
+
+"如果是tmux中的分屏：Ctrl+a + h, 然后在屏幕间跳转，使用 ctrl+a +o
 
 "将取消高亮设置map为;
 nnoremap ; :noh<CR>    
@@ -446,6 +450,8 @@ let g:ycm_complete_in_comments = 1
 set completeopt=menu,menuone
 " 用于函数参数的补全，但是会弹出预览窗口
 let g:ycm_add_preview_to_completeopt = 0
+" 函数跳转
+map gd :YcmCompleter GoToDefinitionElseDeclaration<CR>
 noremap <c-z> <NOP>
 
 let g:ycm_semantic_triggers =  {
@@ -537,11 +543,6 @@ nnoremap H :GitGutterPreviewHunk<CR>
 nnoremap <LEADER>g- :GitGutterPrevHunk<CR>
 nnoremap <LEADER>g= :GitGutterNextHunk<CR>
 
-
-"===
-"=== rainbow
-"===
-"let g:rainbow_active = 1
 
 
 "===
@@ -680,7 +681,7 @@ command! -bang BTags
 " 来搜索某个变量或者函数或者类在哪些文件中使用，就方便多了；
 " 如果不设置好路径，那么就是在当前路径下依据文件内容进行搜索，那么就会出现很多不与当前工程(程序相关的)
 " 的文件，因为那些文件中也可能存在要搜索的内容
-"
+
 "路径自动补全，<c-x><c-f> 是vim 默认的补全文件路径的快捷键，把它映射为 fzf
 "查找路径的方式，再将 <c-x><c-f> 循环映射为 ctrl+z， 这样就方便多了。
 imap <c-z> <c-x><c-f>
@@ -694,6 +695,7 @@ imap <c-x><c-f> <plug>(fzf-complete-path)
 nmap m :Vman <C-R>=expand("<cword>")<CR><CR>
 nmap <leader>m :Vman 2 <C-R>=expand("<cword>")<CR><CR>
 "当使用 m ，该函数的解释后面有(n)， 一般是有2个选项的原因，而不知道选择哪一个，这个时候就给出了一个大概的描述，而不是具体的函数说明，要想使用，需要手动，在normal 模式下，：Vman 2 fun， 其中fun是函数名，即可， 现在通过 空格+m， 就可以实现了，不用输入
+"因为在man 的页面中，K 是man 预设的查询快捷键，因此将 ctrl + k 作为快速向下键
 
 
 "===
@@ -701,11 +703,20 @@ nmap <leader>m :Vman 2 <C-R>=expand("<cword>")<CR><CR>
 "可以翻译当前光标下的单词； 在 visual下， 选中的内容，使用 空格+t 可以翻译句子
 "===
 " Echo translation in the cmdline
-nmap <silent> <Leader>w <Plug>Translate
-vmap <silent> <Leader>w <Plug>TranslateV
+"nmap <silent> <Leader>w <Plug>Translate
+"vmap <silent> <Leader>w <Plug>TranslateV
 " Display translation in a window
 nmap <silent> <Leader>t <Plug>TranslateW
 vmap <silent> <Leader>t <Plug>TranslateWV
 " Replace the text with translation
 nmap <silent> <Leader>r <Plug>TranslateR
 vmap <silent> <Leader>r <Plug>TranslateRV
+
+
+"关于函数跳转的问题, YouCompleteMe 跳转到定义只能在自身所在的文件实现, 跳转到声明可以跨文件, 所以可以使用 ctags 来配合使用, 比如有 scr 路径存放 cpp 源文件, include 路径存放 h 头文件, 可以在 scr 路径下生成 .root 空文件,通过 ctrl+] 来跳转到定义, 声明用 ycm 的 gd 快捷键
+
+"还有一个方法就是通过 fzf 在工程内搜索函数名,使用 ctrl+f 调用 ag 来实现,
+"但是要注意,使用 ag 来查询,只能是在当前文件所在路径或者是该路径的子目录内搜索,
+"ag 搜索的范围是向下的
+" 实现函数的跳转不过是查看函数的具体形式,有时候我们只要知道该接口的信息就够了,这个时候可以使用
+" man 来查询, 具体就是使用 vim-man
