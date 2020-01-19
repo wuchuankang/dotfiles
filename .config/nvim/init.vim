@@ -55,7 +55,7 @@ autocmd FileType python nmap <leader>; o""""""""<left><left><left><cr><Esc>O
 " Open the vimrc file anytime
 map <LEADER>rc :e ~/.config/nvim/init.vim<CR>
 " Open the snippets file anytime
-map <LEADER>sp :e ~/.vim/plugged/vim-snippets/Ultisnips/cpp.snippets<CR>
+map <LEADER>rd :e ~/.config/nvim/dict/sum.dict<CR>
 
 " C++ 中添加{}
 imap <C-j> <Esc>A{<CR><Esc>O
@@ -85,7 +85,8 @@ map ! :q!<CR>
 map s <nop>
 map S :w<CR>
 map Q :q<CR>
-map R :source $MYVIMRC<CR>
+"map R :source $MYVIMRC<CR>
+
 " 分屏
 map sl :set splitright<CR>:vsplit<CR> 
 map sj :set nosplitright<CR>:vsplit<CR>
@@ -247,6 +248,8 @@ Plug 'junegunn/fzf.vim'
 Plug 'vim-utils/vim-man'
 "翻译
 Plug 'voldikss/vim-translator'
+" spell auto correction ，启动方法在命令行输入： enableautocorrect 
+Plug 'sedm0784/vim-you-autocorrect'
 call plug#end()
 
 
@@ -765,4 +768,7 @@ inoremap <silent><expr> <c-space> coc#refresh()
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 " Or use `complete_info` if your vim support it, like:
 " inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
-
+let g:coc#sources#dictionary#dictionaries = {
+    \ 'default' : '',
+    \ 'markdown' : '~/.config/nvim/dict/sum.dict',
+    \ }
