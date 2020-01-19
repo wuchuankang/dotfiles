@@ -59,6 +59,7 @@ map <LEADER>sp :e ~/.vim/plugged/vim-snippets/Ultisnips/cpp.snippets<CR>
 
 " C++ 中添加{}
 imap <C-j> <Esc>A{<CR><Esc>O
+imap <C-l> <Esc>A;<CR>
 "imap { {}<ESC>h<CR><ESC>O
 
 " 删除()中的内容，dh(
@@ -195,8 +196,12 @@ Plug 'Raimondi/delimitMate'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 " 代码自动补全
+" 关于ycm和coc，希望coc在非c/c++中起作用，其方法就是添加在for中，这个像是coc的白名单
+" ycm 只在c/c++ 中，添加进对应的 whitelist 当中即可。
+" 但是如果在同一个buffer中打开coc支持的文件，也有ycm支持的文件，那么这两者使用的时候，也还会有冲突，但即使有冲突，也不妨碍补全实现
+" 如果打开文件命令栏中出现：/home/wck/.config/coc/extensions/node_modules/coc-tailwindcss/out/index.js, 说明是coc补全
 Plug 'Valloric/YouCompleteMe'
-"Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile', 'for': ['json', 'markdown', 'vim', 'sh', 'zsh', 'text']}
 " 语法检查插件
 Plug 'dense-analysis/ale'
 " 进行多行编辑，可以对同一个变量名的多处进行统一重构
@@ -243,7 +248,6 @@ Plug 'vim-utils/vim-man'
 "翻译
 Plug 'voldikss/vim-translator'
 call plug#end()
-
 
 
 " ===
@@ -455,19 +459,15 @@ map gd :YcmCompleter GoToDefinitionElseDeclaration<CR>
 noremap <c-z> <NOP>
 
 let g:ycm_semantic_triggers =  {
-           \ 'c,cpp,python,markdown,java,go,erlang,perl': ['re!\w{2}'],
+           \ 'c,cpp,python,java,go,erlang,perl': ['re!\w{2}'],
            \ 'cs,lua,javascript': ['re!\w{2}'],
            \ }
 " 定义白名单
 let g:ycm_filetype_whitelist = { 
-			\ "c":1,
-			\ "cpp":1, 
-			\ "objc":1,
-			\ "sh":1,
-			\ "vim":1,
-			\ "zsh":1,
-			\ "zimbu":1,
-			\ }
+            \ "c":1,
+            \ "cpp":1, 
+            \ "objc":1,
+            \ }
 
 " ===
 " === coc
@@ -631,7 +631,7 @@ noremap <C-p> :FZF<CR>
 noremap <C-f> :Ag<CR>
 noremap <C-h> :MRU<CR>      
 noremap <C-t> :BTags<CR>
-noremap <C-l> :LinesWithPreview<CR>
+"noremap <C-l> :LinesWithPreview<CR>
 "noremap <C-w> :Buffers<CR>  //这个和跳换窗口冲突
 noremap q; :History:<CR>
 
@@ -720,3 +720,49 @@ vmap <silent> <Leader>r <Plug>TranslateRV
 "ag 搜索的范围是向下的
 " 实现函数的跳转不过是查看函数的具体形式,有时候我们只要知道该接口的信息就够了,这个时候可以使用
 " man 来查询, 具体就是使用 vim-man
+
+
+" ===
+" === coc.nvim
+" ===
+" if hidden is not set, TextEdit might fail.
+set hidden
+
+" Some servers have issues with backup files, see #649
+set nobackup
+set nowritebackup
+
+" Better display for messages
+set cmdheight=2
+
+" You will have bad experience for diagnostic messages when it's default 4000.
+set updatetime=300
+
+" don't give |ins-completion-menu| messages.
+set shortmess+=c
+
+" always show signcolumns
+set signcolumn=yes
+
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
+" Coc only does snippet and additional edit on confirm.
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+" Or use `complete_info` if your vim support it, like:
+" inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+
