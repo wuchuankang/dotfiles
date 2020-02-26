@@ -22,7 +22,8 @@ set hlsearch
 set showcmd
 set wildmenu
 set scrolloff=5
-set tabstop=4
+set tabstop=4   "使用tab键产生4个空格
+set softtabstop=4   "使用回退键(backspace) 回退4个空格
 set clipboard=unnamed
 set cindent
 set showmatch
@@ -43,13 +44,23 @@ autocmd FileType markdown  nmap <leader>` h````````<left><left><left>cpp<cr><Esc
 "下面的这些定义可以使用 snippets 来定义，以防造成键位的混乱
 "autocmd FileType markdown inoremap ~ ~~~~<left><left>  
 "autocmd FileType markdown inoremap $ $$<left>
+"避免输入带来的￥符号的混乱
+autocmd FileType markdown inoremap ￥ $
+autocmd FileType markdown inoremap × *
 "autocmd FileType markdown inoremap $ $$<cr><Esc>O 
 autocmd FileType markdown imap { {}<left>
-autocmd FileType markdown imap <  <
+autocmd FileType markdown imap （ (
+autocmd FileType markdown imap ） )
 autocmd FileType python inoremap ; :
 autocmd FileType python imap { {}<left>
-autocmd FileType python nmap <leader>' h""""""""<left><left><left><cr><Esc>O
+"autocmd FileType python imap <C-x> """"""""<left><left><left><cr><Esc>O  
 autocmd FileType python nmap <leader>; o""""""""<left><left><left><cr><Esc>O
+autocmd FileType python imap <C-c> <Esc>A:<Esc>o""""""""<left><left><left>
+autocmd FileType python imap <C-x> <Esc>A:<cr>
+
+" 当光标在某个单词上的时候，在 normal 模式下，按 # 可以高亮当前 标签页
+" 内所有该词出现的地方
+
 " 将注释改成一下的快捷方式，之所以有8个" 的原因是 ，需要按8次", 才能产生 6个",
 " <cr>是回车
 " Open the vimrc file anytime
@@ -60,7 +71,7 @@ map <LEADER>rd :e ~/.config/nvim/dict/sum.dict<CR>
 " C++ 中添加{}
 imap <C-j> <Esc>A{<CR><Esc>O
 imap <C-l> <Esc>A;<CR>
-"imap { {}<ESC>h<CR><ESC>O
+imap <C-k> <Esc>A;<Esc>
 
 " 删除()中的内容，dh(
 " 删除()中以及括号， da(
@@ -202,7 +213,9 @@ Plug 'vim-airline/vim-airline-themes'
 " 但是如果在同一个buffer中打开coc支持的文件，也有ycm支持的文件，那么这两者使用的时候，也还会有冲突，但即使有冲突，也不妨碍补全实现
 " 如果打开文件命令栏中出现：/home/wck/.config/coc/extensions/node_modules/coc-tailwindcss/out/index.js, 说明是coc补全
 Plug 'Valloric/YouCompleteMe'
-Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile', 'for': ['json', 'markdown', 'vim', 'sh', 'zsh', 'text']}
+" 当是Python环境的时候，要将后面 for 的内容去掉，在 C++ 环境要加上 
+"Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile', 'for': ['json', 'markdown', 'vim', 'sh', 'zsh', 'text', 'py']}
+Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
 " 语法检查插件
 Plug 'dense-analysis/ale'
 " 进行多行编辑，可以对同一个变量名的多处进行统一重构
@@ -237,8 +250,8 @@ Plug 'sheerun/vim-polyglot'
 "Plug 'cgdb/cgdb'
 
 " Snippets 对程序中重复出现的片段，能够使用快捷键快速的实现
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
+Plug 'SirVer/ultisnips'   "是snippet的引擎
+Plug 'honza/vim-snippets'  "是别人已经写好的补全片段，可以自定义或者在其中进行修改，路径在~/.vim/plugged/vim-snippets/UltiSnips路径下
 " 浏览代码时候，光标在哪一个变量上，会在该变量下方加下划线，这样能够看清该变量用在哪些地方
 Plug 'itchyny/vim-cursorword'
 " 快速查询文件插件
@@ -472,32 +485,6 @@ let g:ycm_filetype_whitelist = {
             \ "objc":1,
             \ }
 
-" ===
-" === coc
-" ===
-" fix the most annoying bug that coc has
-"silent! au BufEnter,BufRead,BufNewFile * silent! unmap if
-"let g:coc_global_extensions = ['coc-python', 'coc-vimlsp', 'coc-html', 'coc-json', 'coc-css', 'coc-tsserver', 'coc-yank', 'coc-lists', 'coc-gitignore', 'coc-vimlsp', 'coc-tailwindcss', 'coc-stylelint']
-"set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
-"" use <tab> for trigger completion and navigate to the next complete item
-"function! s:check_back_space() abort
-    "let col = col('.') - 1
-    "return !col || getline('.')[col - 1]	=~ '\s'
-"endfunction
-"inoremap <silent><expr> <Tab>
-            "\ pumvisible() ? "\<C-n>" :
-            "\ <SID>check_back_space() ? "\<Tab>" :
-            "\ coc#refresh()
-"inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-"inoremap <silent><expr> <c-space> coc#refresh()
-"" Useful commands
-"nnoremap <silent> <space>y :<C-u>CocList -A --normal yank<cr>
-"nmap <silent> gd <Plug>(coc-definition)
-"nmap <silent> gy <Plug>(coc-type-definition)
-"nmap <silent> gi <Plug>(coc-implementation)
-"nmap <silent> gr <Plug>(coc-references)
-"nmap <leader>rn <Plug>(coc-rename)
-
 
 "===
 "=== echodoc
@@ -611,8 +598,8 @@ nnoremap <Leader>d :packadd termdebug<CR><ESC>:Termdebug<CR><ESC><c-w>w<c-w>w<c-
 " ===
 let g:tex_flavor = "latex"
 inoremap <c-n> <nop>
-let g:UltiSnipsExpandTrigger="<c-c>"    " 触发 snippets 
-let g:UltiSnipsJumpForwardTrigger="<c-c>"   " 跳转到下一个变量的占位符
+let g:UltiSnipsExpandTrigger="<c-c>"    " ctrl+c触发 snippets 
+let g:UltiSnipsJumpForwardTrigger="<c-c>"   " ctrl+c跳转到下一个变量的占位符
 let g:UltiSnipsJumpBackwardTrigger="<c-n>"  " 跳回上一个
 let g:UltiSnipsSnippetDirectories = [$HOME.'/.vim/plugged/vim-snippets/Ultisnips/', 'UltiSnips']
 "let g:UltiSnipsSnippetDirectories = ['~/.config/nvim/Ultisnips/', 'UltiSnips']
@@ -736,7 +723,7 @@ set nobackup
 set nowritebackup
 
 " Better display for messages
-set cmdheight=2
+set cmdheight=1
 
 " You will have bad experience for diagnostic messages when it's default 4000.
 set updatetime=300
@@ -768,7 +755,36 @@ inoremap <silent><expr> <c-space> coc#refresh()
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 " Or use `complete_info` if your vim support it, like:
 " inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
-let g:coc#sources#dictionary#dictionaries = {
-    \ 'default' : '',
-    \ 'markdown' : '~/.config/nvim/dict/sum.dict',
-    \ }
+"let g:coc#sources#dictionary#dictionaries = {
+    "\ 'default' : '',
+    "\ 'markdown' : '~/.config/nvim/dict/sum.dict',
+    "\ }
+
+" ===
+" === coc
+" ===
+" fix the most annoying bug that coc has
+"silent! au BufEnter,BufRead,BufNewFile * silent! unmap if
+let g:coc_global_extensions = ['coc-python', 'coc-vimlsp', 'coc-html', 'coc-json', 'coc-css', 'coc-tsserver', 'coc-yank', 'coc-lists', 'coc-gitignore', 'coc-vimlsp', 'coc-tailwindcss', 'coc-stylelint']
+"set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+"" use <tab> for trigger completion and navigate to the next complete item
+function! s:check_back_space() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]	=~ '\s'
+endfunction
+inoremap <silent><expr> <Tab>
+            \ pumvisible() ? "\<C-n>" :
+            \ <SID>check_back_space() ? "\<Tab>" :
+            \ coc#refresh()
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" Useful commands
+"nnoremap <silent> <space>y :<C-u>CocList -A --normal yank<cr>
+"nmap <silent> gd <Plug>(coc-definition)
+"nmap <silent> gy <Plug>(coc-type-definition)
+"nmap <silent> gi <Plug>(coc-implementation)
+"nmap <silent> gr <Plug>(coc-references)
+"nmap <leader>rn <Plug>(coc-rename)
+
+
