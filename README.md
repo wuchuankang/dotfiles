@@ -43,9 +43,16 @@ sudo pacman -S the_silver_searcher     # 依据文件内容查找工具，与 fz
 
 ###  install ycm
 
-- 通过插件安装后，要进入 cd .vim/plugged/youcompleteme/ 
-- ./install.py --clang-complete 才能补全C++
+- 通过插件安装后，要进入 cd .vim/plugged/YouCompleteMe/ 
+- ./install.py --clang-complete 才能补全C++，这个在 `zsh` 下不识别，可以切换到 `bash` 运行
 - 要补全头文件，参见init.vim中ycm配置
+
+### install coc
+- 用来补全 `Python、markdown`；
+- 想要补全 `Python`， 要先安装 `jedi`
+```cpp
+sudo pip install jedi
+```
 
 
 ### zsh 配置
