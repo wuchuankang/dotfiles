@@ -1,5 +1,5 @@
 ## dotfiles
-这个是本人在manjaro上的配置
+这个是本人在`manjaro`上的配置
 
 ### install app
 ```bash
@@ -43,9 +43,9 @@ sudo pacman -S the_silver_searcher     # 依据文件内容查找工具，与 fz
 
 ###  install ycm
 
-- 通过插件安装后，要进入 cd .vim/plugged/YouCompleteMe/ 
-- ./install.py --clang-complete 才能补全C++，这个在 `zsh` 下不识别，可以切换到 `bash` 运行
-- 要补全头文件，参见init.vim中ycm配置
+- 通过插件安装后，要进入 `cd .vim/plugged/YouCompleteMe/`
+- `./install.py --clang-complete` 才能补全`C++`，这个在 `zsh` 下不识别，可以切换到 `bash` 运行
+- 要补全头文件，参见`init.vim`中`ycm`配置，具体上 `.ycm_extra_conf.py`
 
 ### install coc
 - 用来补全 `Python、markdown`；
@@ -54,37 +54,41 @@ sudo pacman -S the_silver_searcher     # 依据文件内容查找工具，与 fz
 sudo pip install jedi
 ```
 
-
 ### zsh 配置
 
-- chsh -s /usr/bin/zsh  :将fish设置为默认shell
-- sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"   (安装 oh-my-zsh ，这个是zsh的配置文件)
-- curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
+- `chsh -s /usr/bin/zsh` ：将`fish`设置为默认`shell`
+- `sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"`   (安装`oh-my-zsh`，这个是`zsh`的配置文件)
+- `curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh`
 (上面是管理终端的插件)
 
 ### neovim
 
-- sudo ln -sf /usr/bin/nvim /usr/bin/vi
+- 将 `nvim`链接为 `vi`： `sudo ln -sf /usr/bin/nvim /usr/bin/vi`
 
 ### ecp 映射为 caps
-dconf-editor -> org -> gnome -> desktop -> input-sources -> xkb-options  
+```cpp	
+dconf-editor -> org -> gnome -> desktop -> input-sources -> xkb-options    
 ['caps:swapescape']  
-reboot  
-
+reboot
+```
 ### 安装顺序
 
-先安装上面的软件，然后再进行下面的配置，因为下面的配置有的要依赖上面的app
+先安装上面的软件，然后再进行下面的配置，因为下面的配置有的要依赖上面的`app`
 
 ### 系统快捷键设置
 
-1. 系统设置->键盘->自定义快捷键： name：max terminal ，command: gnome-terminal --maximize   快捷方式：crtl+alt+t
-2. chromium, command:chromium   快捷方式：crtl+alt+c
+1. 系统设置->键盘->自定义快捷键： `name：max terminal ，command: gnome-terminal --maximize` 快捷方式：`crtl+alt+t`
+2. `chromium, command:chromium`  快捷方式：`crtl+alt+c`
 
 ### 更改terminal文件颜色
 
-在 ./.dir_colors 中配置
+在 `./.dir_colors` 中配置
 
 ### git 注意点
 
-1. git clone XXX --depth=1    # 参数用于指定clone深度，1表示只clone最近一次的commit
-2. 在clone本配置的时候，最好使用该参数，因为提交历史过多，内容会大一些，不利于下载
+1. `git clone XXX --depth=1`，参数用于指定`clone` 深度，`1`表示只`clone`最近一次的`commit`;
+2. 在 `clone` 本配置的时候，最好使用该参数，因为提交历史过多，内容会大一些，不利于下载;
+3. 若果通过 `github` 下载速度过慢，可以通过 `码云` 作桥梁进行下载，因为`码云`是国内的，所以速度快，具体操作如下：
+    - 复制 `github` 上的仓库地址，登录到 `码云`，在 `我的码云` 左上角的 `+` 中，选择从 `github` 导入仓库；
+    - 导入仓库后，复制 `码云` 上该仓库的地址，然后通过 `git clone 地址` 的方式，就可以将仓库从 `码云` 上迅速下载，
+    - 修改仓库内容后，如果使用 `git push`，将上传到 `码云`上，如果想重新上传到 `github` 上，修改仓库中 `.git/config` 文件，通过 `vim .git/config`,将 `url` 一栏改成 `github` 上该对应仓库的地址就可以了。  
